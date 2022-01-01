@@ -1,0 +1,65 @@
+// this file will have all the code that you want to apply globally and if you want to overwrite bootstrap styles
+@import './assets/styles/globals.scss';
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700&display=swap');
+
+main.container-fluid,
+header,
+footer {
+	@media screen and (min-width: 767px) {
+		padding-left: 3rem;
+		padding-right: 3rem;
+	}
+}
+nav.navbar {
+	padding-left: 0;
+	padding-right: 0;
+}
+body {
+	font-family: 'Prompt', sans-serif;
+	background: #fcfdff;
+	font-size: 0.9rem;
+	font-weight: 400;
+	line-height: 1.6;
+	color: #212529;
+	text-align: left;
+}
+
+#nprogress .bar {
+	background: #29d !important;
+}
+
+#nprogress .peg {
+	box-shadow: 0 0 10px #29d, 0 0 5px #2299dd !important;
+}
+
+#nprogress .spinner-icon {
+	border-top-color: #29d !important;
+	border-left-color: #29d !important;
+}
+
+h5 {
+	font-size: 1.125rem;
+}
+
+.fade-enter {
+	opacity: 0;
+	z-index: 1;
+}
+
+.fade-enter.fade-enter-active {
+	opacity: 1;
+	transition: opacity 400ms ease;
+}
+
+#nprogress .bar {
+	background: $progress-bar-bg;
+}
+
+#nprogress .peg {
+	box-shadow: 0 0 10px $progress-bar-bg, 0 0 5px $progress-bar-bg;
+}
+
+#nprogress .spinner-icon {
+	border-top-color: $progress-bar-bg;
+	border-left-color: $progress-bar-bg;
+}

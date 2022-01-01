@@ -1,0 +1,21 @@
+.Article {
+	padding-top: 1.5rem;
+	.title {
+		font-weight: 200;
+	}
+	h6 {
+		@media screen and (max-width: 816px) and(min-width: 767px) {
+			font-size: 0.75rem;
+		}
+		@media screen and (max-width: 430px) {
+			font-size: 0.75rem;
+		}
+	}
+
+	@media screen and (max-width: 767px) {
+		h6,
+		h1 {
+			text-align: center;
+		}
+	}
+}
