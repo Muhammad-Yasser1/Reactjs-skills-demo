@@ -1,5 +1,7 @@
+import ArticlesForm from '../../components/articles-form/ArticlesForm';
+
 const EditArticle = () => {
-	return <div>EditArticle</div>;
+	return <ArticlesForm isNewArticle={false} />;
 };
 
 export default EditArticle;

@@ -1,7 +1,76 @@
+import useForm from '../../shared/hooks/useForm';
+import Input from '../Input/Input';
 import './ArticlesForm.scss';
 
-const ArticlesForm = () => {
-	return <div>ArticlesForm</div>;
+interface Props {
+	isNewArticle: boolean;
+}
+const ArticlesForm = ({ isNewArticle }: Props) => {
+	const [
+		formState,
+		handleChange,
+		handleBlur,
+		handleSubmit,
+		handleDelete,
+		handleCancel,
+		onClickSubmitButton,
+		errors,
+		formValid,
+	] = useForm({
+		formState: {
+			title: '',
+			content: '',
+			author: '',
+			image: 'default-image.jpeg',
+		},
+		validateOn: 'change',
+		isNewArticle,
+	});
+	return (
+		<div className='container p-5 ArticlesForm'>
+			<form onSubmit={handleSubmit}>
+				<h1 className='mb-3'>{isNewArticle ? 'Create a new article:' : 'Edit this article:'} </h1>
+				<Input
+					errors={errors['title']}
+					type='input'
+					onChange={handleChange}
+					defaultValue={formState.title}
+					name='title'
+					onBlur={handleBlur}
+					placeholder='Write your article title here'
+				/>
+				<Input
+					errors={errors['content']}
+					type='textarea'
+					onChange={handleChange}
+					defaultValue={formState.content}
+					name='content'
+					onBlur={handleBlur}
+					placeholder='Write your article content here'
+				/>
+				<Input
+					errors={errors['author']}
+					type='input'
+					onChange={handleChange}
+					defaultValue={formState.author}
+					name='author'
+					onBlur={handleBlur}
+					placeholder='Write the article author name here'
+				/>
+				<button disabled={!formValid} type='submit' className='btn btn-primary'>
+					<span onClick={onClickSubmitButton}>{isNewArticle ? 'Create' : 'Edit'}</span>
+				</button>
+				{!isNewArticle && (
+					<button type='button' className='btn btn-danger' onClick={handleDelete}>
+						Delete
+					</button>
+				)}
+				<button onClick={handleCancel} type='button' className='btn btn-dark'>
+					Cancel
+				</button>
+			</form>
+		</div>
+	);
 };
 
 export default ArticlesForm;

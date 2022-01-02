@@ -5,11 +5,13 @@ type Articles = IArticleToStore[];
 
 interface ArticleState {
 	articles: Articles;
+	currentArticle: IArticleToStore;
 	loading: boolean;
 }
 
 const initialState: ArticleState = {
 	articles: [],
+	currentArticle: { id: '', author: '', content: '', title: '', image: '', created_at: '', updated_at: '' },
 	loading: false,
 };
 
@@ -21,10 +23,23 @@ const articlesSlice = createSlice({
 			state.loading = false;
 			state.articles = action.payload;
 		},
-		getArticle: (state, action) => {},
-		addArticle: (state, action) => {},
-		editArticle: (state, action) => {},
-		removeArticle: (state, action) => {},
+		editArticle: (state, action: PayloadAction<IArticleToStore>) => {
+			const removeEditedArticle = state.articles.filter((article) => article.id !== action.payload.id);
+			state.loading = false;
+			state.articles = [...removeEditedArticle, action.payload];
+		},
+		getArticle: (state, action: PayloadAction<IArticleToStore>) => {
+			state.loading = false;
+			state.currentArticle = action.payload || state.currentArticle;
+		},
+		removeArticle: (state, action: PayloadAction<IArticleToStore>) => {
+			state.loading = false;
+			console.log(action.payload);
+		},
+		addArticle: (state, action: PayloadAction<IArticleToStore>) => {
+			state.loading = false;
+			state.articles.push(action.payload);
+		},
 		setLoading: (state, action: PayloadAction<boolean>) => {
 			state.loading = action.payload;
 		},
