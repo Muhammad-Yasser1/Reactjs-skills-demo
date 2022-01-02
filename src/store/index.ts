@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import articlesReducer from './features/articles/articlesSlice';
 import userReducer from './features/user/userSlice';
+import { reducer as notificationsReducer } from 'reapop';
 
 const store = configureStore({
 	reducer: {
+		notifications: notificationsReducer(),
 		articlesReducer,
 		userReducer,
 	},

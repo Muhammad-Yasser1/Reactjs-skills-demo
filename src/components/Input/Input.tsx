@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-
+import './Input.scss';
 interface Props {
 	name: string;
 	type: 'input' | 'textarea';
@@ -42,14 +42,14 @@ const Input = ({
 	}, [label, name]);
 
 	return (
-		<div className='form-group'>
+		<div className='form-group Input'>
 			<label htmlFor={id ?? name}>{formattedLabel}</label>
 			{type === 'input' ? (
 				<input
 					onBlur={onBlur}
 					onFocus={onFocus}
 					type={inputType}
-					className={'form-control ' + customClassName}
+					className={`form-control ${errors.length ? 'form-control--invalid' : ''}` + customClassName}
 					name={name}
 					id={id ?? name}
 					placeholder={placeholder}
@@ -61,7 +61,7 @@ const Input = ({
 					onBlur={onBlur}
 					onFocus={onFocus}
 					rows={rows}
-					className={'form-control ' + customClassName}
+					className={`form-control ${errors.length ? 'form-control--invalid' : ''}` + customClassName}
 					name={name}
 					id={id ?? name}
 					placeholder={placeholder}
@@ -69,13 +69,15 @@ const Input = ({
 					defaultValue={defaultValue}
 				/>
 			)}
-			{errors.map((error) => {
-				return (
-					<div key={error.id}>
-						<small>{error.message}</small>
-					</div>
-				);
-			})}
+			<div>
+				{errors.map((error) => {
+					return (
+						<div key={error.id}>
+							<small>{error.message}</small>
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 };

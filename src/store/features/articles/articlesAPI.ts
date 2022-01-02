@@ -1,67 +1,122 @@
 import { Article } from './../../../shared/models/Article.model';
 import { IArticleToStore } from './../../../shared/interfaces/Article.interface';
 import apiClient from '../../apiClient';
+import { notify } from 'reapop';
+import { Dispatch } from '@reduxjs/toolkit';
+import { AxiosResponse } from 'axios';
+import { articleActions } from './articlesSlice';
 
-export const fetchAll = () => {
+export const fetchAll = (dispatch: Dispatch) => {
 	return apiClient
 		.get('articles.json')
 		.then((res) => {
-			const articles: IArticleToStore[] = [];
-			for (const key in res.data) {
-				if (Object.prototype.hasOwnProperty.call(res.data, key)) {
-					const article = res.data[key];
-					articles.push({ id: key, ...article });
+			if (res.statusText === 'OK') {
+				const articles: IArticleToStore[] = [];
+				for (const key in res.data) {
+					if (Object.prototype.hasOwnProperty.call(res.data, key)) {
+						const article = res.data[key];
+						articles.push({ id: key, ...article });
+					}
 				}
+				return articles;
+			} else {
+				dispatch(notify("articles wasn't fetched due to network error", 'error'));
+				throw new Error('Network error');
 			}
-			return articles;
 		})
 		.catch((err) => {
 			console.log(err);
-			return err;
+			dispatch(notify(err.message, 'error'));
+			return [];
 		});
 };
-export const fetchOne = (id: string) => {
+export const fetchOne = (id: string, dispatch: Dispatch) => {
 	return apiClient
 		.get(`articles/${id}.json`)
 		.then((res) => {
-			return { ...res.data, id };
+			if (res.statusText === 'OK') {
+				if (res.data === null) {
+					dispatch(articleActions.wasArticleFound(false));
+					dispatch(notify('no article with this id was found', 'error'));
+					return null;
+				} else {
+					dispatch(articleActions.wasArticleFound(true));
+					return { ...res.data, id };
+				}
+			} else {
+				dispatch(articleActions.wasArticleFound(false));
+				dispatch(notify("article wasn't fetched due to network error", 'error'));
+				throw new Error('Network error');
+			}
 		})
 		.catch((err) => {
+			dispatch(articleActions.wasArticleFound(false));
+			dispatch(notify(err.message, 'error'));
 			console.log(err);
-			return err;
+			return null;
 		});
 };
-export const postArticle = (newArticle: Article) => {
+export const postArticle = (newArticle: Article, dispatch: Dispatch) => {
 	return apiClient
 		.post('articles.json', { ...newArticle })
 		.then((res) => {
-			return { id: res.data.name, ...newArticle };
+			if (res.statusText === 'OK') {
+				dispatch(notify(`The "${newArticle.title}" article was created successfully`, 'success'));
+				return { id: res.data.name, ...newArticle };
+			} else {
+				dispatch(notify(`The "${newArticle.title}" article wasn't created due to network error`, 'error'));
+				throw new Error('Network Error');
+			}
 		})
 		.catch((err) => {
+			dispatch(notify(err.message, 'error'));
 			console.log(err);
-			return err;
+			return null;
 		});
 };
 
-export const putArticle = (id: string, newArticle: Article) => {
+export const putArticle = (id: string, newArticle: Article, dispatch: Dispatch) => {
 	return apiClient
 		.put(`articles/${id}.json`, { ...newArticle })
 		.then((res) => {
-			return { id, ...res.data };
+			if (res.statusText === 'OK') {
+				if (res.data === null) {
+					dispatch(articleActions.wasArticleFound(false));
+					dispatch(notify('no article with this id was found', 'error'));
+					return null;
+				} else {
+					dispatch(articleActions.wasArticleFound(true));
+					dispatch(notify(`The "${res.data.title}" article was edited successfully`, 'success'));
+					return { ...res.data, id };
+				}
+			} else {
+				dispatch(articleActions.wasArticleFound(false));
+				dispatch(notify(`The "${res.data.title}" article wasn't edited due to network error`, 'error'));
+				throw new Error('Network error');
+			}
 		})
 		.catch((err) => {
+			dispatch(articleActions.wasArticleFound(false));
+			dispatch(notify(err.message, 'error'));
 			console.log(err);
-			return err;
+			return null;
 		});
 };
-export const deleteOne = (id: string) => {
+export const deleteOne = (article: IArticleToStore, dispatch: Dispatch) => {
 	return apiClient
-		.delete(`articles/${id}.json`)
+		.delete(`articles/${article.id}.json`)
 		.then((res) => {
-			return res.data;
+			if (res.statusText === 'OK') {
+				dispatch(notify(`The "${article.title}" article was deleted successfully`, 'success'));
+				return article;
+			} else {
+				dispatch(notify(`The "${article.title}" article wasn't deleted due to network error`, 'error'));
+				throw new Error('Network error');
+			}
 		})
 		.catch((err) => {
+			dispatch(notify(err.message, 'error'));
 			console.log(err);
-			return err;
+			return null;
 		});
 };

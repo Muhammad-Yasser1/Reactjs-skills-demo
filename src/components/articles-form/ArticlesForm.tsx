@@ -23,7 +23,7 @@ const ArticlesForm = ({ isNewArticle }: Props) => {
 			author: '',
 			image: 'default-image.jpeg',
 		},
-		validateOn: 'change',
+		validateOn: 'submitAndBlur',
 		isNewArticle,
 	});
 	return (

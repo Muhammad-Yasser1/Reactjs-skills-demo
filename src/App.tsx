@@ -9,36 +9,62 @@ import { useAppDispatch, useAppSelector } from './store';
 import { useEffect } from 'react';
 import { fetchAllArticles } from './store/features/articles/articlesActions';
 import PageNotFound from './pages/page-not-found/PageNotFound';
+import nprogress from 'nprogress';
+import 'nprogress/nprogress.css';
+import NotificationsSystem, { atalhoTheme, dismissNotification, setUpNotifications } from 'reapop';
 
 const App = () => {
 	const dispatch = useAppDispatch();
+	const notifications = useAppSelector((state) => state.notifications);
 	const articles = useAppSelector((state) => state.articlesReducer.articles);
+	const loading = useAppSelector((state) => state.articlesReducer.loading);
 	const mode = useAppSelector((state) => state.userReducer.mode);
+
 	useEffect(() => {
+		setUpNotifications({
+			defaultProps: {
+				position: 'top-right',
+				dismissible: true,
+			},
+		});
 		if (!articles.length) {
 			dispatch(fetchAllArticles());
 		}
 	}, [dispatch]);
+	useEffect(() => {
+		if (loading) {
+			nprogress.start();
+		} else {
+			nprogress.done();
+		}
+	}, [loading]);
 
 	return (
-		<Routes>
-			<Route path={'/'} element={<MainLayout />}>
-				<Route path={''} element={<Navigate to={'/home'} />} />
-				<Route path={'home'} element={<Home />} />
-				<Route path={'articles/:id'} element={<ArticleDetails />} />
-				<Route
-					path={'articles/create'}
-					element={mode === 'Admin' ? <CreateArticle /> : <Navigate to={'/home'} />}
-				/>
-				<Route
-					path={'articles/:id/edit'}
-					element={mode === 'Admin' ? <EditArticle /> : <Navigate to={'/home'} />}
-				/>
-			</Route>
-			<Route path={'/auth'} element={<AuthUser />} />
-			<Route path={'/page-not-found'} element={<PageNotFound />} />
-			<Route path={'*'} element={<Navigate to={'/page-not-found'} />} />
-		</Routes>
+		<>
+			<NotificationsSystem
+				notifications={notifications}
+				dismissNotification={(id) => dispatch(dismissNotification(id))}
+				theme={atalhoTheme}
+			/>
+			<Routes>
+				<Route path={'/'} element={<MainLayout />}>
+					<Route path={''} element={<Navigate to={'/home'} />} />
+					<Route path={'home'} element={<Home />} />
+					<Route path={'articles/:id'} element={<ArticleDetails />} />
+					<Route
+						path={'articles/create'}
+						element={mode === 'Admin' ? <CreateArticle /> : <Navigate to={'/home'} />}
+					/>
+					<Route
+						path={'articles/:id/edit'}
+						element={mode === 'Admin' ? <EditArticle /> : <Navigate to={'/home'} />}
+					/>
+				</Route>
+				<Route path={'/auth'} element={<AuthUser />} />
+				<Route path={'/page-not-found'} element={<PageNotFound />} />
+				<Route path={'*'} element={<Navigate to={'/page-not-found'} />} />
+			</Routes>
+		</>
 	);
 };
 

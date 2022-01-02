@@ -24,17 +24,19 @@ body {
 	text-align: left;
 }
 
-#nprogress .bar {
-	background: #29d !important;
-}
+#nprogress {
+	.bar {
+		background: $progress-bar-color;
+		height: 4px;
+	}
+	.peg {
+		box-shadow: 0 0 10px $progress-bar-color, 0 0 5px $progress-bar-color;
+	}
 
-#nprogress .peg {
-	box-shadow: 0 0 10px #29d, 0 0 5px #2299dd !important;
-}
-
-#nprogress .spinner-icon {
-	border-top-color: #29d !important;
-	border-left-color: #29d !important;
+	.spinner-icon {
+		border-top-color: $progress-bar-color;
+		border-left-color: $progress-bar-color;
+	}
 }
 
 h5 {
@@ -49,17 +51,4 @@ h5 {
 .fade-enter.fade-enter-active {
 	opacity: 1;
 	transition: opacity 400ms ease;
-}
-
-#nprogress .bar {
-	background: $progress-bar-bg;
-}
-
-#nprogress .peg {
-	box-shadow: 0 0 10px $progress-bar-bg, 0 0 5px $progress-bar-bg;
-}
-
-#nprogress .spinner-icon {
-	border-top-color: $progress-bar-bg;
-	border-left-color: $progress-bar-bg;
 }

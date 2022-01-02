@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { notify } from 'reapop';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { createArticle, deleteArticle, editArticle, fetchArticle } from '../../store/features/articles/articlesActions';
 import { initFormErrorsFromState } from '../helpers/initFormErrors';
@@ -127,7 +128,7 @@ const useForm = (configs: { formState: FormState; validateOn: 'submitAndBlur' | 
 				navigate('/home');
 			}, 100);
 		} else {
-			console.log("form isn't valid");
+			dispatch(notify('Please fix the fields errors'));
 		}
 	};
 	const onClickSubmitButton = () => {
@@ -138,7 +139,7 @@ const useForm = (configs: { formState: FormState; validateOn: 'submitAndBlur' | 
 		navigate('/home');
 	};
 	const handleDelete = () => {
-		dispatch(deleteArticle(params.id as string));
+		dispatch(deleteArticle(currentArticle));
 		setTimeout(() => {
 			navigate('/home');
 		}, 100);

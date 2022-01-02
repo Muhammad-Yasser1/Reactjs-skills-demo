@@ -1,13 +1,24 @@
 import { useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { notify } from 'reapop';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { fetchArticle } from '../../store/features/articles/articlesActions';
+import { articleActions } from '../../store/features/articles/articlesSlice';
 import './ArticleDetails.scss';
 
 const ArticleDetails = () => {
 	const params = useParams();
 	const article = useAppSelector((state) => state.articlesReducer.currentArticle);
+	const wasArticleFound = useAppSelector((state) => state.articlesReducer.wasArticleFound);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (!wasArticleFound) {
+			dispatch(articleActions.wasArticleFound(true)); // reset
+			navigate('/home');
+		}
+	}, [wasArticleFound, dispatch, navigate]);
+
 	useEffect(() => {
 		dispatch(fetchArticle(params.id as string));
 	}, [dispatch, params.id]);

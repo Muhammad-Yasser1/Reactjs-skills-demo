@@ -6,12 +6,14 @@ type Articles = IArticleToStore[];
 interface ArticleState {
 	articles: Articles;
 	currentArticle: IArticleToStore;
+	wasArticleFound: boolean;
 	loading: boolean;
 }
 
 const initialState: ArticleState = {
 	articles: [],
 	currentArticle: { id: '', author: '', content: '', title: '', image: '', created_at: '', updated_at: '' },
+	wasArticleFound: true,
 	loading: false,
 };
 
@@ -23,25 +25,30 @@ const articlesSlice = createSlice({
 			state.loading = false;
 			state.articles = action.payload;
 		},
+		getArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
+			state.loading = false;
+			state.currentArticle = action.payload || state.currentArticle;
+		},
 		editArticle: (state, action: PayloadAction<IArticleToStore>) => {
 			const removeEditedArticle = state.articles.filter((article) => article.id !== action.payload.id);
 			state.loading = false;
 			state.articles = [...removeEditedArticle, action.payload];
 		},
-		getArticle: (state, action: PayloadAction<IArticleToStore>) => {
+		removeArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
 			state.loading = false;
-			state.currentArticle = action.payload || state.currentArticle;
+			// console.log(action.payload);
 		},
-		removeArticle: (state, action: PayloadAction<IArticleToStore>) => {
+		addArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
 			state.loading = false;
-			console.log(action.payload);
-		},
-		addArticle: (state, action: PayloadAction<IArticleToStore>) => {
-			state.loading = false;
-			state.articles.push(action.payload);
+			if (action.payload) {
+				state.articles.push(action.payload);
+			}
 		},
 		setLoading: (state, action: PayloadAction<boolean>) => {
 			state.loading = action.payload;
+		},
+		wasArticleFound: (state, action: PayloadAction<boolean>) => {
+			state.wasArticleFound = action.payload;
 		},
 	},
 	extraReducers: (builder) => {
