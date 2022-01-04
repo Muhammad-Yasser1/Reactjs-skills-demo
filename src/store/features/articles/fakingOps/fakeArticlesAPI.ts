@@ -1,16 +1,14 @@
-import { Article } from './../../../shared/models/Article.model';
-import { IArticleToStore } from './../../../shared/interfaces/Article.interface';
-import apiClient from '../../apiClient';
+import { Article } from '../../../../shared/models/Article.model';
+import { IArticleToStore } from '../../../../shared/interfaces/Article.interface';
+import apiClient from '../../../apiClient';
 import { notify } from 'reapop';
 import { Dispatch } from '@reduxjs/toolkit';
-import { articleActions } from './articlesSlice';
-
-type RawArticles = { [key: string]: Article };
-type IdOfCreated = { name: string };
+import { articleActions } from '../articlesSlice';
+import store from '../../..';
 
 export const fetchAll = (dispatch: Dispatch) => {
 	return apiClient
-		.get<RawArticles>('articles.json')
+		.get<{ [key: string]: Article }>('articles.json')
 		.then((res) => {
 			if (res.statusText === 'OK') {
 				const articles: IArticleToStore[] = [];
@@ -33,8 +31,16 @@ export const fetchAll = (dispatch: Dispatch) => {
 		});
 };
 export const fetchOne = (id: string, dispatch: Dispatch) => {
-	return apiClient
-		.get<Article>(`articles/${id}.json`)
+	return new Promise<{ statusText: string; data: Article }>((resolve) =>
+		setTimeout(
+			() =>
+				resolve({
+					statusText: 'OK',
+					data: store.getState().articlesReducer.articles.find((article) => article.id === id)!,
+				}),
+			100
+		)
+	)
 		.then((res) => {
 			if (res.statusText === 'OK') {
 				if (res.data === null) {
@@ -59,8 +65,9 @@ export const fetchOne = (id: string, dispatch: Dispatch) => {
 		});
 };
 export const postArticle = (newArticle: Article, dispatch: Dispatch) => {
-	return apiClient
-		.post<IdOfCreated>('articles.json', { ...newArticle })
+	return new Promise<{ statusText: string; data: { name: string } }>((resolve) => {
+		setTimeout(() => resolve({ statusText: 'OK', data: { name: Math.random().toString() } }), 100);
+	})
 		.then((res) => {
 			if (res.statusText === 'OK') {
 				dispatch(notify(`The "${newArticle.title}" article was created successfully`, 'success'));
@@ -78,8 +85,9 @@ export const postArticle = (newArticle: Article, dispatch: Dispatch) => {
 };
 
 export const putArticle = (id: string, newArticle: Article, dispatch: Dispatch) => {
-	return apiClient
-		.put<Article>(`articles/${id}.json`, { ...newArticle })
+	return new Promise<{ statusText: string; data: Article }>((resolve) => {
+		setTimeout(() => resolve({ statusText: 'OK', data: newArticle }), 100);
+	})
 		.then((res) => {
 			if (res.statusText === 'OK') {
 				if (res.data === null) {
@@ -105,8 +113,9 @@ export const putArticle = (id: string, newArticle: Article, dispatch: Dispatch) 
 		});
 };
 export const deleteOne = (article: IArticleToStore, dispatch: Dispatch) => {
-	return apiClient
-		.delete<null>(`articles/${article.id}.json`)
+	return new Promise<{ statusText: string; data: null }>((resolve) => {
+		setTimeout(() => resolve({ statusText: 'OK', data: null }), 100);
+	})
 		.then((res) => {
 			if (res.statusText === 'OK') {
 				dispatch(notify(`The "${article.title}" article was deleted successfully`, 'success'));

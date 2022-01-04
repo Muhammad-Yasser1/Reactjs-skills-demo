@@ -3,3 +3,9 @@
 	left: 50%;
 	transform: translateX(-50%);
 }
+
+@mixin center-flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

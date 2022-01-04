@@ -23,13 +23,15 @@ const ArticlesForm = ({ isNewArticle }: Props) => {
 			author: '',
 			image: 'default-image.jpeg',
 		},
-		validateOn: 'submitAndBlur',
+		validateOn: 'blurAndSubmit',
 		isNewArticle,
 	});
 	return (
-		<div className='container p-5 ArticlesForm'>
+		<div className='container ArticlesForm'>
 			<form onSubmit={handleSubmit}>
-				<h1 className='mb-3'>{isNewArticle ? 'Create a new article:' : 'Edit this article:'} </h1>
+				<h1 className='ArticlesForm__title'>
+					{isNewArticle ? 'Create a new article:' : 'Edit this article:'}{' '}
+				</h1>
 				<Input
 					errors={errors['title']}
 					type='input'

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/home/Home';
 import EditArticle from './pages/edit-article/EditArticle';
 import ArticleDetails from './pages/article-details/ArticleDetails';
@@ -12,14 +12,13 @@ import PageNotFound from './pages/page-not-found/PageNotFound';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import NotificationsSystem, { atalhoTheme, dismissNotification, setUpNotifications } from 'reapop';
-
 const App = () => {
 	const dispatch = useAppDispatch();
 	const notifications = useAppSelector((state) => state.notifications);
 	const articles = useAppSelector((state) => state.articlesReducer.articles);
 	const loading = useAppSelector((state) => state.articlesReducer.loading);
 	const mode = useAppSelector((state) => state.userReducer.mode);
-
+	const location = useLocation();
 	useEffect(() => {
 		setUpNotifications({
 			defaultProps: {
@@ -46,8 +45,8 @@ const App = () => {
 				dismissNotification={(id) => dispatch(dismissNotification(id))}
 				theme={atalhoTheme}
 			/>
-			<Routes>
-				<Route path={'/'} element={<MainLayout />}>
+			<Routes location={location}>
+				<Route path={'/'} element={<MainLayout location={location} />}>
 					<Route path={''} element={<Navigate to={'/home'} />} />
 					<Route path={'home'} element={<Home />} />
 					<Route path={'articles/:id'} element={<ArticleDetails />} />

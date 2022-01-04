@@ -36,7 +36,7 @@ const articlesSlice = createSlice({
 		},
 		removeArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
 			state.loading = false;
-			// console.log(action.payload);
+			state.articles = state.articles.filter((article) => article.id !== action.payload?.id);
 		},
 		addArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
 			state.loading = false;

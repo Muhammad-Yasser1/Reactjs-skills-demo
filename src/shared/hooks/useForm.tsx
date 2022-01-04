@@ -8,7 +8,11 @@ import { IArticleToStore } from '../interfaces/Article.interface';
 import { FormState } from '../interfaces/ArticleFormState.interface';
 import { Article } from '../models/Article.model';
 
-const useForm = (configs: { formState: FormState; validateOn: 'submitAndBlur' | 'change'; isNewArticle: boolean }) => {
+const useForm = (configs: {
+	formState: FormState;
+	validateOn: 'blurAndSubmit' | 'changeAndSubmit';
+	isNewArticle: boolean;
+}) => {
 	const navigate = useNavigate();
 	const params = useParams();
 	const dispatch = useAppDispatch();
@@ -101,12 +105,12 @@ const useForm = (configs: { formState: FormState; validateOn: 'submitAndBlur' | 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-		if (configs.validateOn === 'change') {
+		if (configs.validateOn === 'changeAndSubmit') {
 			validateFormInput(e.target.name, e.target.value);
 		}
 	};
 	const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		if (configs.validateOn === 'submitAndBlur') {
+		if (configs.validateOn === 'blurAndSubmit') {
 			validateFormInput(e.target.name, e.target.value);
 		}
 	};

@@ -14,10 +14,12 @@ export const fetchAllArticles = createAsyncThunk('articles/fetchArticles', async
 });
 
 export const fetchArticle = createAsyncThunk('articles/fetchArticle', async (id: string, { dispatch }) => {
-	const article: IArticleToStore = await articlesAPI.fetchOne(id, dispatch);
-	dispatch(articleActions.getArticle(article));
-	dispatch(articleActions.setLoading(true));
-	return article;
+	const article: IArticleToStore | null = await articlesAPI.fetchOne(id, dispatch);
+	if (article) {
+		dispatch(articleActions.getArticle(article));
+		dispatch(articleActions.setLoading(true));
+		return article;
+	}
 });
 
 export const createArticle = createAsyncThunk('articles/createArticle', async (newArticle: Article, { dispatch }) => {
@@ -30,10 +32,12 @@ export const createArticle = createAsyncThunk('articles/createArticle', async (n
 export const editArticle = createAsyncThunk(
 	'articles/editArticle',
 	async ({ id, newArticle }: { id: string; newArticle: Article }, { dispatch }) => {
-		const article: IArticleToStore = await articlesAPI.putArticle(id, newArticle, dispatch);
-		dispatch(articleActions.editArticle(article));
-		dispatch(articleActions.setLoading(true));
-		return article;
+		const article: IArticleToStore | null = await articlesAPI.putArticle(id, newArticle, dispatch);
+		if (article) {
+			dispatch(articleActions.editArticle(article));
+			dispatch(articleActions.setLoading(true));
+			return article;
+		}
 	}
 );
 

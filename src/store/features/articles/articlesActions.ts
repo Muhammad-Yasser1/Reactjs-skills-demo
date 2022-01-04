@@ -2,7 +2,10 @@ import { articleActions } from './articlesSlice';
 import { IArticleToStore } from './../../../shared/interfaces/Article.interface';
 import { Article } from './../../../shared/models/Article.model';
 import { Dispatch } from '@reduxjs/toolkit';
-import * as articlesAPI from './articlesAPI';
+// import * as articlesAPI from './articlesAPI';
+import * as articlesAPI from './fakingOps/fakeArticlesAPI';
+
+type ArticleOrCaught = IArticleToStore | null;
 
 export const fetchAllArticles = () => async (dispatch: Dispatch) => {
 	dispatch(articleActions.setLoading(true));
@@ -13,14 +16,16 @@ export const fetchAllArticles = () => async (dispatch: Dispatch) => {
 
 export const fetchArticle = (id: string) => async (dispatch: Dispatch) => {
 	dispatch(articleActions.setLoading(true));
-	const article: IArticleToStore = await articlesAPI.fetchOne(id, dispatch);
-	dispatch(articleActions.getArticle(article));
-	return article;
+	const article: ArticleOrCaught = await articlesAPI.fetchOne(id, dispatch);
+	if (article) {
+		dispatch(articleActions.getArticle(article));
+		return article;
+	}
 };
 
 export const createArticle = (newArticle: Article) => async (dispatch: Dispatch) => {
 	dispatch(articleActions.setLoading(true));
-	const article: IArticleToStore | null = await articlesAPI.postArticle(newArticle, dispatch);
+	const article: ArticleOrCaught = await articlesAPI.postArticle(newArticle, dispatch);
 	dispatch(articleActions.addArticle(article));
 	return article;
 };
@@ -29,14 +34,16 @@ export const editArticle =
 	({ id, newArticle }: { id: string; newArticle: Article }) =>
 	async (dispatch: Dispatch) => {
 		dispatch(articleActions.setLoading(true));
-		const article: IArticleToStore = await articlesAPI.putArticle(id, newArticle, dispatch);
-		dispatch(articleActions.editArticle(article));
-		return article;
+		const article: ArticleOrCaught = await articlesAPI.putArticle(id, newArticle, dispatch);
+		if (article) {
+			dispatch(articleActions.editArticle(article));
+			return article;
+		}
 	};
 
 export const deleteArticle = (article: IArticleToStore) => async (dispatch: Dispatch) => {
 	dispatch(articleActions.setLoading(true));
-	const deletedArticle: IArticleToStore | null = await articlesAPI.deleteOne(article, dispatch);
+	const deletedArticle: ArticleOrCaught = await articlesAPI.deleteOne(article, dispatch);
 	dispatch(articleActions.removeArticle(deletedArticle));
 	return deletedArticle;
 };

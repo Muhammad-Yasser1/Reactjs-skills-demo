@@ -9,7 +9,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-	mode: 'Admin',
+	mode: 'Reader',
 	loading: false,
 	isAuth: false,
 };

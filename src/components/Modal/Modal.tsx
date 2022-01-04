@@ -40,11 +40,12 @@ const Modal = (props: Props) => {
 						</button>
 					</div>
 					<div className='modal-body'>
-						your changes won't be committed to the database, it will be handled in the front end, I wrote
-						the requests but commented it, if you want to check the source code I'll happily sent it to you
+						your changes won't be committed to the database, they will be handled on frontend, the
+						difference is that no permanent changes can be done (only get requests get sent), you can find
+						the requests in articlesAPI.ts file if you want to check them.
 						<br />
-						<br />I did this so no body make any permanent changes or just mess around by deleting all the
-						test articles,
+						<br />I did so to prevent messing around by deleting of all the articles or writing some funny
+						language.
 						<br />
 						<br />
 						in other words: you are the one refresh admin now, peace :)

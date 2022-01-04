@@ -1,9 +1,12 @@
 interface State {
 	[key: string]: string;
 }
-
+interface Error {
+	id: string;
+	message: string;
+}
 interface Errors {
-	[key: string]: { id: string; message: string }[];
+	[key: string]: Error[];
 }
 export const initFormErrorsFromState = (state: State) => {
 	let errors: Errors = {};

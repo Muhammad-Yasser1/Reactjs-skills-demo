@@ -1,5 +1,15 @@
+import { Link } from 'react-router-dom';
+import './PageNotFound.scss';
+
 const PageNotFound = () => {
-	return <div>PageNotFound</div>;
+	return (
+		<div className='PageNotFound'>
+			<h2>The Page you are looking for wasn't found</h2>
+			<Link to={'/home'} className='btn btn-outline-primary'>
+				Return to Home
+			</Link>
+		</div>
+	);
 };
 
 export default PageNotFound;

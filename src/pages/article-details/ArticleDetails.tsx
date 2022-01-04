@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { notify } from 'reapop';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { fetchArticle } from '../../store/features/articles/articlesActions';
 import { articleActions } from '../../store/features/articles/articlesSlice';
@@ -24,31 +23,30 @@ const ArticleDetails = () => {
 	}, [dispatch, params.id]);
 	return (
 		<div className='Article row'>
-			<div className='col-lg-4 col-md-6 col-9 mx-auto'>
+			<div className='col-lg-4 col-md-6 col-9 Article__image'>
 				{article.image && (
 					<img className='img-fluid' src={require(`../../assets/images/${article.image}`)} alt='Article' />
 				)}
 			</div>
-			<div className='col-11 col-md-6 col-lg-8 mx-auto my-3 my-lg-0'>
-				<h1 className='title'>{article.title}</h1>
-				<div className='my-3 mb-4'>
+			<div className='col-11 col-md-6 col-lg-8 Article__text-container'>
+				<h1 className='Article__title'>{article.title}</h1>
+				<div className='Article__meta'>
 					<h6>
 						by {article.author} -- {article.updated_at}
 					</h6>
 				</div>
 				<hr />
-				<div className='card bg-transparent border-0'>
+				<div className='Article__content card'>
 					<div className='card-body'>
 						<blockquote className='blockquote'>
-							<p>{article.content}</p>
+							<p>
+								{article.content} {article.content} {article.content} {article.content}{' '}
+								{article.content} {article.content} {article.content} {article.content}{' '}
+								{article.content} {article.content}
+							</p>
 						</blockquote>
 					</div>
 				</div>
-				<p>{article.content}</p>
-				<p>{article.content}</p>
-				<p>{article.content}</p>
-				<p>{article.content}</p>
-				<p>{article.content}</p>
 			</div>
 		</div>
 	);

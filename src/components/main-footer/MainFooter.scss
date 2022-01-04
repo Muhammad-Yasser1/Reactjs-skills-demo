@@ -1,7 +1,13 @@
 @import '../../assets/styles/globals.scss';
 
-footer {
+.MainFooter {
 	font-size: 30px;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+	&__content {
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+		padding-top: 1.5rem;
+	}
 	@media screen and (max-width: 420px) and (min-width: 400px) {
 		padding: 1.8rem !important;
 	}

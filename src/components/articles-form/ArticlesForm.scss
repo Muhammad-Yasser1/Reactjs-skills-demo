@@ -1,4 +1,8 @@
 .ArticlesForm {
+	padding: 3rem;
+	&__title {
+		margin-bottom: 1rem;
+	}
 	button:not(:first-of-type) {
 		margin-left: 10px;
 		color: #fff;
