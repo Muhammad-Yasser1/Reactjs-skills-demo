@@ -8,7 +8,7 @@ import { IArticleToStore } from '../interfaces/Article.interface';
 import { FormState } from '../interfaces/ArticleFormState.interface';
 import { Article } from '../models/Article.model';
 
-const useForm = (configs: {
+const useArticleForm = (configs: {
 	formState: FormState;
 	validateOn: 'blurAndSubmit' | 'changeAndSubmit';
 	isNewArticle: boolean;
@@ -161,4 +161,4 @@ const useForm = (configs: {
 	] as const;
 };
 
-export default useForm;
+export default useArticleForm;

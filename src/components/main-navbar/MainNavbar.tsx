@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useAppDispatch } from '../../store';
-import { mode, setMode } from '../../store/features/user/userSlice';
+import { mode, setMode, userActions } from '../../store/features/user/userSlice';
+import localStorageApi from '../../store/features/user/localStorageApi';
 import './MainNavbar.scss';
 
 interface Props {
@@ -15,7 +16,10 @@ const MainNavbar = (props: Props) => {
 	const activateReaderMode = () => {
 		dispatch(setMode('Reader'));
 	};
-
+	const logout = () => {
+		dispatch(userActions.signOut());
+		localStorageApi.removeToken();
+	};
 	return (
 		<header>
 			<nav className='MainNavbar navbar navbar-expand'>
@@ -26,25 +30,22 @@ const MainNavbar = (props: Props) => {
 					<li className='btn-group'>
 						<button
 							type='button'
-							className={`btn ${
-								props.mode === 'Admin'
-									? 'btn-primary'
-									: 'btn-secondary'
-							}`}
+							className={`btn ${props.mode === 'Admin' ? 'btn-primary' : 'btn-secondary'}`}
 							onClick={activateAdminMode}
 						>
 							Admin Mode
 						</button>
 						<button
 							type='button'
-							className={`btn ${
-								props.mode === 'Reader'
-									? 'btn-primary'
-									: 'btn-secondary'
-							}`}
+							className={`btn ${props.mode === 'Reader' ? 'btn-primary' : 'btn-secondary'}`}
 							onClick={activateReaderMode}
 						>
 							Reader Mode
+						</button>
+					</li>
+					<li>
+						<button type='button' className='btn btn-danger' onClick={logout}>
+							Logout
 						</button>
 					</li>
 				</ul>

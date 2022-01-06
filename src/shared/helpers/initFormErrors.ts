@@ -1,14 +1,11 @@
-interface State {
-	[key: string]: string;
-}
 interface Error {
 	id: string;
 	message: string;
 }
-interface Errors {
+export interface Errors {
 	[key: string]: Error[];
 }
-export const initFormErrorsFromState = (state: State) => {
+export const initFormErrorsFromState = (state: object) => {
 	let errors: Errors = {};
 	for (const key in state) {
 		if (Object.prototype.hasOwnProperty.call(state, key)) {

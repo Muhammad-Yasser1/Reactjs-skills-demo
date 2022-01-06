@@ -1,4 +1,4 @@
-import useForm from '../../shared/hooks/useForm';
+import useArticleForm from '../../shared/hooks/useArticleForm';
 import Input from '../Input/Input';
 import './ArticlesForm.scss';
 
@@ -16,7 +16,7 @@ const ArticlesForm = ({ isNewArticle }: Props) => {
 		onClickSubmitButton,
 		errors,
 		formValid,
-	] = useForm({
+	] = useArticleForm({
 		formState: {
 			title: '',
 			content: '',

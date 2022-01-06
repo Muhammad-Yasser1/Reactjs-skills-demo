@@ -12,13 +12,20 @@ import PageNotFound from './pages/page-not-found/PageNotFound';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import NotificationsSystem, { atalhoTheme, dismissNotification, setUpNotifications } from 'reapop';
+import localStorageApi from './store/features/user/localStorageApi';
+import { userActions } from './store/features/user/userSlice';
+import { ISignInUserRes } from './shared/interfaces/User.interface';
+
 const App = () => {
 	const dispatch = useAppDispatch();
 	const notifications = useAppSelector((state) => state.notifications);
-	const articles = useAppSelector((state) => state.articlesReducer.articles);
-	const loading = useAppSelector((state) => state.articlesReducer.loading);
+	const articlesLoading = useAppSelector((state) => state.articlesReducer.loading);
+	const userLoading = useAppSelector((state) => state.userReducer.loading);
+	const isAuth = useAppSelector((state) => state.userReducer.isAuth);
+	const loading = articlesLoading || userLoading;
 	const mode = useAppSelector((state) => state.userReducer.mode);
 	const location = useLocation();
+
 	useEffect(() => {
 		setUpNotifications({
 			defaultProps: {
@@ -26,10 +33,15 @@ const App = () => {
 				dismissible: true,
 			},
 		});
-		if (!articles.length) {
-			dispatch(fetchAllArticles());
+
+		const token = localStorageApi.loadToken();
+		if (token) {
+			dispatch(userActions.signIn({ idToken: token } as ISignInUserRes));
 		}
+
+		dispatch(fetchAllArticles());
 	}, [dispatch]);
+
 	useEffect(() => {
 		if (loading) {
 			nprogress.start();
@@ -46,7 +58,7 @@ const App = () => {
 				theme={atalhoTheme}
 			/>
 			<Routes location={location}>
-				<Route path={'/'} element={<MainLayout location={location} />}>
+				<Route path={'/'} element={isAuth ? <MainLayout location={location} /> : <Navigate to='/auth' />}>
 					<Route path={''} element={<Navigate to={'/home'} />} />
 					<Route path={'home'} element={<Home />} />
 					<Route path={'articles/:id'} element={<ArticleDetails />} />
@@ -59,7 +71,7 @@ const App = () => {
 						element={mode === 'Admin' ? <EditArticle /> : <Navigate to={'/home'} />}
 					/>
 				</Route>
-				<Route path={'/auth'} element={<AuthUser />} />
+				<Route path={'/auth'} element={!isAuth ? <AuthUser /> : <Navigate to='/home' />} />
 				<Route path={'/page-not-found'} element={<PageNotFound />} />
 				<Route path={'*'} element={<Navigate to={'/page-not-found'} />} />
 			</Routes>

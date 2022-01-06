@@ -19,7 +19,7 @@ const MainLayout = (props: Props) => {
 			{mode !== 'Reader' && <FloatingButton mode={mode} />}
 			{createPortal(<Modal mode={mode} />, document.getElementById('modal-container') as HTMLDivElement)}
 			<TransitionGroup>
-				<CSSTransition key={props.location.pathname} classNames='fade' timeout={200}>
+				<CSSTransition key={props.location.pathname} classNames='fade' timeout={400}>
 					<main className='container-fluid'>
 						<Outlet />
 					</main>

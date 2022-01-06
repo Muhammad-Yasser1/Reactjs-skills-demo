@@ -1,10 +1,9 @@
 import { Article } from '../../../../shared/models/Article.model';
 import { IArticleToStore } from '../../../../shared/interfaces/Article.interface';
-import apiClient from '../../../apiClient';
+import apiClient from '../articlesApiClient';
 import { notify } from 'reapop';
 import { Dispatch } from '@reduxjs/toolkit';
 import { articleActions } from '../articlesSlice';
-import store from '../../..';
 
 export const fetchAll = (dispatch: Dispatch) => {
 	return apiClient
@@ -31,16 +30,8 @@ export const fetchAll = (dispatch: Dispatch) => {
 		});
 };
 export const fetchOne = (id: string, dispatch: Dispatch) => {
-	return new Promise<{ statusText: string; data: Article }>((resolve) =>
-		setTimeout(
-			() =>
-				resolve({
-					statusText: 'OK',
-					data: store.getState().articlesReducer.articles.find((article) => article.id === id)!,
-				}),
-			100
-		)
-	)
+	return apiClient
+		.get<Article>(`articles/${id}.json`)
 		.then((res) => {
 			if (res.statusText === 'OK') {
 				if (res.data === null) {

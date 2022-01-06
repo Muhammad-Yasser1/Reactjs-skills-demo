@@ -11,6 +11,7 @@ const ArticleDetails = () => {
 	const wasArticleFound = useAppSelector((state) => state.articlesReducer.wasArticleFound);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (!wasArticleFound) {
 			dispatch(articleActions.wasArticleFound(true)); // reset

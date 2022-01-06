@@ -22,24 +22,19 @@ const articlesSlice = createSlice({
 	initialState,
 	reducers: {
 		initArticles: (state, action: PayloadAction<Articles>) => {
-			state.loading = false;
 			state.articles = action.payload;
 		},
 		getArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
-			state.loading = false;
 			state.currentArticle = action.payload || state.currentArticle;
 		},
 		editArticle: (state, action: PayloadAction<IArticleToStore>) => {
 			const removeEditedArticle = state.articles.filter((article) => article.id !== action.payload.id);
-			state.loading = false;
 			state.articles = [...removeEditedArticle, action.payload];
 		},
 		removeArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
-			state.loading = false;
 			state.articles = state.articles.filter((article) => article.id !== action.payload?.id);
 		},
 		addArticle: (state, action: PayloadAction<IArticleToStore | null>) => {
-			state.loading = false;
 			if (action.payload) {
 				state.articles.push(action.payload);
 			}

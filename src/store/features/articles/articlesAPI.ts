@@ -1,6 +1,6 @@
 import { Article } from './../../../shared/models/Article.model';
 import { IArticleToStore } from './../../../shared/interfaces/Article.interface';
-import apiClient from '../../apiClient';
+import apiClient from './articlesApiClient';
 import { notify } from 'reapop';
 import { Dispatch } from '@reduxjs/toolkit';
 import { articleActions } from './articlesSlice';
@@ -9,6 +9,7 @@ type RawArticles = { [key: string]: Article };
 type IdOfCreated = { name: string };
 
 export const fetchAll = (dispatch: Dispatch) => {
+	dispatch(articleActions.setLoading(true));
 	return apiClient
 		.get<RawArticles>('articles.json')
 		.then((res) => {
@@ -30,9 +31,13 @@ export const fetchAll = (dispatch: Dispatch) => {
 			console.log(err);
 			dispatch(notify(err.message, 'error'));
 			return [];
+		})
+		.finally(() => {
+			dispatch(articleActions.setLoading(false));
 		});
 };
 export const fetchOne = (id: string, dispatch: Dispatch) => {
+	dispatch(articleActions.setLoading(true));
 	return apiClient
 		.get<Article>(`articles/${id}.json`)
 		.then((res) => {
@@ -56,9 +61,13 @@ export const fetchOne = (id: string, dispatch: Dispatch) => {
 			dispatch(notify(err.message, 'error'));
 			console.log(err);
 			return null;
+		})
+		.finally(() => {
+			dispatch(articleActions.setLoading(false));
 		});
 };
 export const postArticle = (newArticle: Article, dispatch: Dispatch) => {
+	dispatch(articleActions.setLoading(true));
 	return apiClient
 		.post<IdOfCreated>('articles.json', { ...newArticle })
 		.then((res) => {
@@ -74,10 +83,14 @@ export const postArticle = (newArticle: Article, dispatch: Dispatch) => {
 			dispatch(notify(err.message, 'error'));
 			console.log(err);
 			return null;
+		})
+		.finally(() => {
+			dispatch(articleActions.setLoading(false));
 		});
 };
 
 export const putArticle = (id: string, newArticle: Article, dispatch: Dispatch) => {
+	dispatch(articleActions.setLoading(true));
 	return apiClient
 		.put<Article>(`articles/${id}.json`, { ...newArticle })
 		.then((res) => {
@@ -102,9 +115,13 @@ export const putArticle = (id: string, newArticle: Article, dispatch: Dispatch) 
 			dispatch(notify(err.message, 'error'));
 			console.log(err);
 			return null;
+		})
+		.finally(() => {
+			dispatch(articleActions.setLoading(false));
 		});
 };
 export const deleteOne = (article: IArticleToStore, dispatch: Dispatch) => {
+	dispatch(articleActions.setLoading(true));
 	return apiClient
 		.delete<null>(`articles/${article.id}.json`)
 		.then((res) => {
@@ -120,5 +137,8 @@ export const deleteOne = (article: IArticleToStore, dispatch: Dispatch) => {
 			dispatch(notify(err.message, 'error'));
 			console.log(err);
 			return null;
+		})
+		.finally(() => {
+			dispatch(articleActions.setLoading(false));
 		});
 };
