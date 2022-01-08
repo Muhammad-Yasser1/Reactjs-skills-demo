@@ -24,6 +24,7 @@ const App = () => {
 	const isAuth = useAppSelector((state) => state.userReducer.isAuth);
 	const loading = articlesLoading || userLoading;
 	const mode = useAppSelector((state) => state.userReducer.mode);
+	const token = useAppSelector((state) => state.userReducer.token);
 	const location = useLocation();
 
 	useEffect(() => {
@@ -33,14 +34,12 @@ const App = () => {
 				dismissible: true,
 			},
 		});
-
-		const token = localStorageApi.loadToken();
-		if (token) {
+		const savedToken = localStorageApi.loadToken();
+		if (token || savedToken) {
 			dispatch(userActions.signIn({ idToken: token } as ISignInUserRes));
+			dispatch(fetchAllArticles());
 		}
-
-		dispatch(fetchAllArticles());
-	}, [dispatch]);
+	}, [dispatch, token]);
 
 	useEffect(() => {
 		if (loading) {
