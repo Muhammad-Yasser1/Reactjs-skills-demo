@@ -22,8 +22,12 @@ body {
 	line-height: 1.6;
 	color: #212529;
 	text-align: left;
+	h5 {
+		font-size: 1.125rem;
+	}
 }
 
+// progress bar
 #nprogress {
 	.bar {
 		background: $progress-bar-color;
@@ -39,10 +43,7 @@ body {
 	}
 }
 
-h5 {
-	font-size: 1.125rem;
-}
-
+// routes animation
 .fade-enter {
 	opacity: 0;
 	z-index: 1;
@@ -50,5 +51,22 @@ h5 {
 	&.fade-enter-active {
 		opacity: 1;
 		transition: opacity 400ms ease;
+	}
+}
+
+// detect if the system is in dark mode
+@media (prefers-color-scheme: dark), (prefers-dark-interface) {
+	body {
+		background-color: $dark-bg !important;
+		color: $light-text !important;
+	}
+	.navbar a.navbar-brand {
+		color: $light-text;
+	}
+	.modal .modal-content {
+		background-color: $dark-bg;
+	}
+	footer .MainFooter__content {
+		border-top-color: transparentize($light-bg, 0.9);
 	}
 }

@@ -1,5 +1,6 @@
 import { ISignUpUserRes, ISignInUserRes } from './../../../shared/interfaces/User.interface';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { loadToken } from './localStorageApi';
 
 export type mode = 'Admin' | 'Reader';
 
@@ -13,8 +14,8 @@ interface UserState {
 const initialState: UserState = {
 	mode: 'Reader',
 	loading: false,
-	isAuth: false,
-	token: '',
+	isAuth: !!loadToken() || false,
+	token: loadToken() || '',
 };
 
 const userSlice = createSlice({

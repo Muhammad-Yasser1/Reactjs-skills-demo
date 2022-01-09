@@ -2,6 +2,7 @@ export const loadToken = () => {
 	try {
 		const token = localStorage.getItem('token');
 		const expirationDate = JSON.parse(localStorage.getItem('expirationDate') || '');
+
 		if (token === null || expirationDate < new Date().getTime()) {
 			return undefined;
 		}

@@ -21,6 +21,9 @@ const ArticleDetails = () => {
 
 	useEffect(() => {
 		dispatch(fetchArticle(params.id as string));
+		return () => {
+			dispatch(articleActions.resetCurrentArticle());
+		};
 	}, [dispatch, params.id]);
 	return (
 		<div className='Article row'>
@@ -32,17 +35,19 @@ const ArticleDetails = () => {
 			<div className='col-11 col-md-6 col-lg-8 Article__text-container'>
 				<h1 className='Article__title'>{article.title}</h1>
 				<div className='Article__meta'>
-					<h6>
-						by {article.author} -- {article.updated_at}
-					</h6>
+					{article.author && (
+						<h6>
+							by {article.author} -- {article.updated_at}
+						</h6>
+					)}
 				</div>
 				<hr />
 				<div className='Article__content card'>
 					<div className='card-body'>
 						<blockquote className='blockquote'>
 							<p>
-								{article.content} {article.content} {article.content} {article.content}{' '}
-								{article.content} {article.content} {article.content} {article.content}{' '}
+								{article.content} {article.content} {article.content} {article.content}
+								{article.content} {article.content} {article.content} {article.content}
 								{article.content} {article.content}
 							</p>
 						</blockquote>

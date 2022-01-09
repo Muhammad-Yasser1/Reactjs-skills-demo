@@ -1,6 +1,9 @@
 @import '../../assets/styles/globals.scss';
 
 .ArticlesList {
+	&__ops-row {
+		display: flex;
+	}
 	.card {
 		padding-top: 30px;
 		border: none;

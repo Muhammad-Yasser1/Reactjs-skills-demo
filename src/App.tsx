@@ -1,8 +1,4 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import Home from './pages/home/Home';
-import EditArticle from './pages/edit-article/EditArticle';
-import ArticleDetails from './pages/article-details/ArticleDetails';
-import CreateArticle from './pages/create-article/CreateArticle';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import AuthUser from './pages/auth-user/AuthUser';
 import MainLayout from './layouts/main-layout/MainLayout';
 import { useAppDispatch, useAppSelector } from './store';
@@ -12,9 +8,6 @@ import PageNotFound from './pages/page-not-found/PageNotFound';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import NotificationsSystem, { atalhoTheme, dismissNotification, setUpNotifications } from 'reapop';
-import localStorageApi from './store/features/user/localStorageApi';
-import { userActions } from './store/features/user/userSlice';
-import { ISignInUserRes } from './shared/interfaces/User.interface';
 
 const App = () => {
 	const dispatch = useAppDispatch();
@@ -23,9 +16,7 @@ const App = () => {
 	const userLoading = useAppSelector((state) => state.userReducer.loading);
 	const isAuth = useAppSelector((state) => state.userReducer.isAuth);
 	const loading = articlesLoading || userLoading;
-	const mode = useAppSelector((state) => state.userReducer.mode);
 	const token = useAppSelector((state) => state.userReducer.token);
-	const location = useLocation();
 
 	useEffect(() => {
 		setUpNotifications({
@@ -34,9 +25,7 @@ const App = () => {
 				dismissible: true,
 			},
 		});
-		const savedToken = localStorageApi.loadToken();
-		if (token || savedToken) {
-			dispatch(userActions.signIn({ idToken: token } as ISignInUserRes));
+		if (token) {
 			dispatch(fetchAllArticles());
 		}
 	}, [dispatch, token]);
@@ -56,23 +45,10 @@ const App = () => {
 				dismissNotification={(id) => dispatch(dismissNotification(id))}
 				theme={atalhoTheme}
 			/>
-			<Routes location={location}>
-				<Route path={'/'} element={isAuth ? <MainLayout location={location} /> : <Navigate to='/auth' />}>
-					<Route path={''} element={<Navigate to={'/home'} />} />
-					<Route path={'home'} element={<Home />} />
-					<Route path={'articles/:id'} element={<ArticleDetails />} />
-					<Route
-						path={'articles/create'}
-						element={mode === 'Admin' ? <CreateArticle /> : <Navigate to={'/home'} />}
-					/>
-					<Route
-						path={'articles/:id/edit'}
-						element={mode === 'Admin' ? <EditArticle /> : <Navigate to={'/home'} />}
-					/>
-				</Route>
+			<Routes>
+				<Route path={'/*'} element={isAuth ? <MainLayout /> : <Navigate to='/auth' />} />
 				<Route path={'/auth'} element={!isAuth ? <AuthUser /> : <Navigate to='/home' />} />
 				<Route path={'/page-not-found'} element={<PageNotFound />} />
-				<Route path={'*'} element={<Navigate to={'/page-not-found'} />} />
 			</Routes>
 		</>
 	);

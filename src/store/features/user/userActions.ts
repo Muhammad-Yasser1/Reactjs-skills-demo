@@ -1,3 +1,4 @@
+import { notify } from 'reapop';
 import { ISignInUserRes } from './../../../shared/interfaces/User.interface';
 import { signUpUserReq, signInUserReq } from './userAPI';
 import { IUserCred } from '../../../shared/interfaces/UserCred.interface';
@@ -14,6 +15,7 @@ export const signUpUser =
 			dispatch
 		);
 		if (status === 200) {
+			dispatch(notify(`${data.email} Signed up successfully!`, 'success'));
 			dispatch(userActions.signUp(data));
 			localStorageApi.saveToken({ token: data.idToken, expiresIn: data.expiresIn });
 			return data;
@@ -28,6 +30,7 @@ export const signInUser =
 			dispatch
 		);
 		if (status === 200) {
+			dispatch(notify(`${data.email} Signed in successfully!`, 'success'));
 			dispatch(userActions.signIn(data));
 			localStorageApi.saveToken({ token: data.idToken, expiresIn: data.expiresIn });
 			return data;

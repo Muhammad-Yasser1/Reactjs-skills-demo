@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../store';
 import { mode, setMode, userActions } from '../../store/features/user/userSlice';
 import localStorageApi from '../../store/features/user/localStorageApi';
 import './MainNavbar.scss';
+import { notify } from 'reapop';
 
 interface Props {
 	mode: mode;
@@ -18,6 +19,7 @@ const MainNavbar = (props: Props) => {
 	};
 	const logout = () => {
 		dispatch(userActions.signOut());
+		dispatch(notify('You signed out successfully!', 'success'));
 		localStorageApi.removeToken();
 	};
 	return (
@@ -26,6 +28,7 @@ const MainNavbar = (props: Props) => {
 				<NavLink className='navbar-brand' to='/'>
 					Mo Blog
 				</NavLink>
+
 				<ul className='navbar-nav'>
 					<li className='btn-group'>
 						<button

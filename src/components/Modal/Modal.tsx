@@ -42,9 +42,9 @@ const Modal = (props: Props) => {
 					<div className='modal-body'>
 						your changes won't be committed to the database, they will be handled on frontend, the
 						difference is that no permanent changes can be done (only get requests get sent), you can find
-						the requests in articlesAPI.ts file if you want to check them.
+						all requests in the articlesAPI.ts file if you want to check them.
 						<br />
-						<br />I did so to prevent messing around by deleting of all the articles or writing some funny
+						<br />I did so to prevent messing around by deleting all of the articles or writing some funny
 						language.
 						<br />
 						<br />
