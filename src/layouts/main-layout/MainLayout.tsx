@@ -12,38 +12,59 @@ import Home from '../../pages/home/Home';
 import { useAppSelector } from '../../store';
 import './MainLayout.scss';
 
-const MainLayout = () => {
-	const mode = useAppSelector((state) => state.userReducer.mode);
-	const location = useLocation();
+function MainLayout() {
+    const mode = useAppSelector((state) => state.userReducer.mode);
+    const location = useLocation();
 
-	return (
-		<>
-			<MainNavbar mode={mode} />
-			{mode !== 'Reader' && <FloatingButton mode={mode} />}
-			{createPortal(<Modal mode={mode} />, document.getElementById('modal-container') as HTMLDivElement)}
+    return (
+        <>
+            <MainNavbar mode={mode} />
+            {mode !== 'Reader' && <FloatingButton />}
+            {createPortal(
+                <Modal mode={mode} />,
+                document.getElementById('modal-container') as HTMLDivElement
+            )}
 
-			<AnimatedRoutes>
-				<main className='container-fluid'>
-					<Routes location={location}>
-						<Route path={'/'} element={<Navigate to={'/home'} />} />
-						<Route path={'/home'} element={<Home />} />
-						<Route
-							path={'/articles/create'}
-							element={mode === 'Admin' ? <CreateArticle /> : <Navigate to={'/home'} />}
-						/>
-						<Route
-							path={'/articles/:id/edit'}
-							element={mode === 'Admin' ? <EditArticle /> : <Navigate to={'/home'} />}
-						/>
-						<Route path={'/articles/:id'} element={<ArticleDetails />} />
-						<Route path={'*'} element={<Navigate to={'/page-not-found'} />} />
-					</Routes>
-				</main>
-			</AnimatedRoutes>
+            <AnimatedRoutes>
+                <main className="container-fluid">
+                    <Routes location={location}>
+                        <Route path="/" element={<Navigate to="/home" />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route
+                            path="/articles/create"
+                            element={
+                                mode === 'Admin' ? (
+                                    <CreateArticle />
+                                ) : (
+                                    <Navigate to="/home" />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/articles/:id/edit"
+                            element={
+                                mode === 'Admin' ? (
+                                    <EditArticle />
+                                ) : (
+                                    <Navigate to="/home" />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/articles/:id"
+                            element={<ArticleDetails />}
+                        />
+                        <Route
+                            path="*"
+                            element={<Navigate to="/page-not-found" />}
+                        />
+                    </Routes>
+                </main>
+            </AnimatedRoutes>
 
-			<MainFooter />
-		</>
-	);
-};
+            <MainFooter />
+        </>
+    );
+}
 
 export default MainLayout;

@@ -5,68 +5,68 @@
 main.container-fluid,
 header,
 footer {
-	@media screen and (min-width: 767px) {
-		padding-left: 3rem;
-		padding-right: 3rem;
-	}
+    @media screen and (min-width: 767px) {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
 }
 nav.navbar {
-	padding-left: 0;
-	padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 body {
-	font-family: 'Prompt', sans-serif;
-	background: #fcfdff;
-	font-size: 0.9rem;
-	font-weight: 400;
-	line-height: 1.6;
-	color: #212529;
-	text-align: left;
-	h5 {
-		font-size: 1.125rem;
-	}
+    font-family: 'Prompt', sans-serif;
+    background: #fcfdff;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #212529;
+    text-align: left;
+    h5 {
+        font-size: 1.125rem;
+    }
 }
 
 // progress bar
 #nprogress {
-	.bar {
-		background: $progress-bar-color;
-		height: 4px;
-	}
-	.peg {
-		box-shadow: 0 0 10px $progress-bar-color, 0 0 5px $progress-bar-color;
-	}
+    .bar {
+        background: $progress-bar-color;
+        height: 4px;
+    }
+    .peg {
+        box-shadow: 0 0 10px $progress-bar-color, 0 0 5px $progress-bar-color;
+    }
 
-	.spinner-icon {
-		border-top-color: $progress-bar-color;
-		border-left-color: $progress-bar-color;
-	}
+    .spinner-icon {
+        border-top-color: $progress-bar-color;
+        border-left-color: $progress-bar-color;
+    }
 }
 
 // routes animation
 .fade-enter {
-	opacity: 0;
-	z-index: 1;
+    opacity: 0;
+    z-index: 1;
 
-	&.fade-enter-active {
-		opacity: 1;
-		transition: opacity 400ms ease;
-	}
+    &.fade-enter-active {
+        opacity: 1;
+        transition: opacity 400ms ease;
+    }
 }
 
 // detect if the system is in dark mode
 @media (prefers-color-scheme: dark), (prefers-dark-interface) {
-	body {
-		background-color: $dark-bg !important;
-		color: $light-text !important;
-	}
-	.navbar a.navbar-brand {
-		color: $light-text;
-	}
-	.modal .modal-content {
-		background-color: $dark-bg;
-	}
-	footer .MainFooter__content {
-		border-top-color: transparentize($light-bg, 0.9);
-	}
+    body {
+        background-color: $dark-bg !important;
+        color: $light-text !important;
+    }
+    .navbar a.navbar-brand {
+        color: $light-text;
+    }
+    .modal .modal-content {
+        background-color: $dark-bg;
+    }
+    footer .MainFooter__content {
+        border-top-color: transparentize($light-bg, 0.9);
+    }
 }

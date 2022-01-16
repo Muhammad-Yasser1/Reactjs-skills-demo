@@ -1,7 +1,7 @@
 import ArticlesForm from '../../components/articles-form/ArticlesForm';
 
-const CreateArticle = () => {
-	return <ArticlesForm isNewArticle={true} />;
-};
+function CreateArticle() {
+    return <ArticlesForm isNewArticle />;
+}
 
 export default CreateArticle;
