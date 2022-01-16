@@ -52,15 +52,15 @@ body {
         opacity: 1;
         transition: opacity 400ms ease;
     }
-}
+}   
 
 // detect if the system is in dark mode
 @media (prefers-color-scheme: dark), (prefers-dark-interface) {
     body {
-        background-color: $dark-bg !important;
-        color: $light-text !important;
+        background-color: $dark-bg;
+        color: $light-text;
     }
-    .navbar a.navbar-brand {
+    nav.navbar button.navbar-brand {
         color: $light-text;
     }
     .modal .modal-content {

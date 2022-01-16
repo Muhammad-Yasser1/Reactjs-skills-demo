@@ -1,4 +1,3 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import nprogress from 'nprogress';
 import NotificationsSystem, {
@@ -6,12 +5,11 @@ import NotificationsSystem, {
     dismissNotification,
     setUpNotifications,
 } from 'reapop';
-import AuthUser from './pages/auth-user/AuthUser';
-import MainLayout from './layouts/main-layout/MainLayout';
 import { useAppDispatch, useAppSelector } from './store';
 import { fetchAllArticles } from './store/features/articles/articlesActions';
-import PageNotFound from './pages/page-not-found/PageNotFound';
 import 'nprogress/nprogress.css';
+
+import AppRoutes from './routes/AppRoutes/AppRoutes';
 
 function App() {
     const dispatch = useAppDispatch();
@@ -20,7 +18,6 @@ function App() {
         (state) => state.articlesReducer.loading
     );
     const userLoading = useAppSelector((state) => state.userReducer.loading);
-    const isAuth = useAppSelector((state) => state.userReducer.isAuth);
     const loading = articlesLoading || userLoading;
     const token = useAppSelector((state) => state.userReducer.token);
 
@@ -51,17 +48,7 @@ function App() {
                 dismissNotification={(id) => dispatch(dismissNotification(id))}
                 theme={atalhoTheme}
             />
-            <Routes>
-                <Route
-                    path={'/*'}
-                    element={isAuth ? <MainLayout /> : <Navigate to="/auth" />}
-                />
-                <Route
-                    path="/auth"
-                    element={!isAuth ? <AuthUser /> : <Navigate to="/home" />}
-                />
-                <Route path="/page-not-found" element={<PageNotFound />} />
-            </Routes>
+            <AppRoutes />
         </>
     );
 }

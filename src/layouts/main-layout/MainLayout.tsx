@@ -1,16 +1,24 @@
+import { lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import FloatingButton from '../../components/floating-button/FloatingButton';
 import MainFooter from '../../components/main-footer/MainFooter';
 import MainNavbar from '../../components/main-navbar/MainNavbar';
 import Modal from '../../components/modal/Modal';
-import AnimatedRoutes from '../../HOC/AnimatedRoutes';
-import ArticleDetails from '../../pages/article-details/ArticleDetails';
-import CreateArticle from '../../pages/create-article/CreateArticle';
-import EditArticle from '../../pages/edit-article/EditArticle';
-import Home from '../../pages/home/Home';
+import AnimatedRoutes from '../../routes/AnimatedRoutes/AnimatedRoutes';
+// import EditArticle from '../../pages/edit-article/EditArticle';
 import { useAppSelector } from '../../store';
 import './MainLayout.scss';
+
+import Home from '../../pages/home/Home';
+
+const EditArticle = lazy(() => import('../../pages/edit-article/EditArticle'));
+const CreateArticle = lazy(
+    () => import('../../pages/create-article/CreateArticle')
+);
+const ArticleDetails = lazy(
+    () => import('../../pages/article-details/ArticleDetails')
+);
 
 function MainLayout() {
     const mode = useAppSelector((state) => state.userReducer.mode);
@@ -34,7 +42,9 @@ function MainLayout() {
                             path="/articles/create"
                             element={
                                 mode === 'Admin' ? (
-                                    <CreateArticle />
+                                    <Suspense fallback="">
+                                        <CreateArticle />
+                                    </Suspense>
                                 ) : (
                                     <Navigate to="/home" />
                                 )
@@ -44,7 +54,9 @@ function MainLayout() {
                             path="/articles/:id/edit"
                             element={
                                 mode === 'Admin' ? (
-                                    <EditArticle />
+                                    <Suspense fallback="">
+                                        <EditArticle />
+                                    </Suspense>
                                 ) : (
                                     <Navigate to="/home" />
                                 )
@@ -52,7 +64,11 @@ function MainLayout() {
                         />
                         <Route
                             path="/articles/:id"
-                            element={<ArticleDetails />}
+                            element={
+                                <Suspense fallback="">
+                                    <ArticleDetails />
+                                </Suspense>
+                            }
                         />
                         <Route
                             path="*"

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { notify } from 'reapop';
 import { useAppDispatch } from '../../store';
 import {
@@ -15,6 +15,7 @@ interface Props {
 
 function MainNavbar(props: Props) {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const activateAdminMode = () => {
         dispatch(setMode('Admin'));
     };
@@ -26,12 +27,23 @@ function MainNavbar(props: Props) {
         dispatch(notify('You signed out successfully!', 'success'));
         localStorageApi.removeToken();
     };
+
+    const handleNavigate = () => {
+        if (window.location.pathname !== '/home') {
+            navigate('/home');
+        }
+    };
+
     return (
         <header>
             <nav className="MainNavbar navbar navbar-expand">
-                <NavLink className="navbar-brand" to="/">
+                <button
+                    type="button"
+                    className="navbar-brand"
+                    onClick={handleNavigate}
+                >
                     Mo Blog
-                </NavLink>
+                </button>
 
                 <ul className="navbar-nav">
                     <li className="btn-group">
