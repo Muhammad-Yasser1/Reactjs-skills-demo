@@ -11,4 +11,4 @@
 ### `Things I plan to add or improve when I have some free time`
 - Improve accessibilty
 - Write unit tests
-- Make it a Progressive Web App, -- cahce the static contents -- make the CRUD operations work offline
+- Make it a Progressive Web App: -- cahce the static contents -- make the CRUD operations work offline and sync them when getting back online
